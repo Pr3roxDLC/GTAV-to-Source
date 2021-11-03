@@ -70,17 +70,19 @@ os.chdir(tmppath)
 for smd in glob.glob("*.smd"):
     qc = open(smd[:-4] + ".qc", "w+")
     qc.write("$modelname	\"props\\test\\" + smd[:-4] +".mdl\"" + "\n")
+    qc.write("$scale		200" + "\n")
     qc.write("$body mybody	\"" + os.path.abspath(smd)[:-4] + ".smd\"" + "\n")
     qc.write("$staticprop" + "\n")
     qc.write("$surfaceprop	default" + "\n")
     qc.write("$cdmaterials	\"models\props\"" + "\n")
-    qc.write("$scale		20" + "\n")
     qc.write("$sequence idle	\"" + os.path.abspath(smd)[:-4] + ".smd\"" + "\n")
     qc.write("$collisionmodel	\"" + os.path.abspath(smd)[:-4] + ".smd\" { $concave }" )
     qc.close()
 
+    #Send each QC file to studiomdl to be compiled, works 
     qcpath = os.path.abspath(smd)[:-4] + ".qc" + '"'
     os.chdir(sourcedir)
     os.system("studiomdl.exe -game " + '"' + gamedir + '" "' + qcpath )
     os.chdir(tmppath)
+
    
