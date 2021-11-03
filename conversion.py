@@ -60,3 +60,5 @@ os.chdir(blenderdir)
 os.system("blender --background --python " + rootdir + "\\blenderscript.py -- " + rootdir)
 
 #Compiling the SMD Model to a MDL model so it can be used in the Source Engine
+os.chdir(tmppath)
+
