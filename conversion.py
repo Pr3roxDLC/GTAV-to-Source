@@ -5,10 +5,18 @@ import glob
 #Get and store the original root dir
 rootdir = os.getcwd()
 
-#Get the Directory containing all the .odr files
-odrdir = "D:\\downloads\\GTA5Models\\raw\\mpheist4\\int_mp_h_props\\"
+cfg = open("run.cfg", "r")
+lines = cfg.readlines()
+for line in lines:
+	if line.startswith("ODR"):
+		odrdir = line.split("=")[1].strip(" ").strip("\n")
+	if line.startswith("Blender"):
+		blenderdir = line.split("=")[1].strip(" ").strip("\n")
+		
 
-blenderdir ="D:\\Programme\\"
+#Get the Directory containing all the .odr files
+#odrdir = "D:\\downloads\\GTA5Models\\raw\\mpheist4\\int_mp_h_props\\"
+#blenderdir ="D:\\Programme\\"
 
 if(not os.path.exists("temp")):
 	os.mkdir("temp")
@@ -47,6 +55,8 @@ shutil.copyfile("ShaderManager.xml", tmppath + "ShaderManager.xml")
 os.chdir(tmppath)
 os.system("py openformat-to-obj.py *.odr -f")
 ()
-#Start blender to for the OBJ to SMD Conversion
+#Start blender to for the OBJ to SMD Conversion pass on the root dir so the blender script can find the config
 os.chdir(blenderdir)
-os.system("blender --background --python " + rootdir + "\\blenderscript.py" )
+os.system("blender --background --python " + rootdir + "\\blenderscript.py -- " + rootdir)
+
+#Compiling the SMD Model to a MDL model so it can be used in the Source Engine
