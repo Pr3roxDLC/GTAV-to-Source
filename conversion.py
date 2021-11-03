@@ -1,6 +1,7 @@
 import os
 import shutil
 import glob
+import subprocess
 
 #Get and store the original root dir
 rootdir = os.getcwd()
@@ -12,6 +13,10 @@ for line in lines:
 		odrdir = line.split("=")[1].strip(" ").strip("\n")
 	if line.startswith("Blender"):
 		blenderdir = line.split("=")[1].strip(" ").strip("\n")
+	if line.startswith("Source Engine"):
+		sourcedir = line.split("=")[1].strip(" ").strip("\n")
+	if line.startswith("Source Game"):
+		gamedir = line.split("=")[1].strip(" ").strip("\n")
 		
 
 #Get the Directory containing all the .odr files
@@ -61,4 +66,21 @@ os.system("blender --background --python " + rootdir + "\\blenderscript.py -- " 
 
 #Compiling the SMD Model to a MDL model so it can be used in the Source Engine
 os.chdir(tmppath)
+#Generate a Generic QC File in the temp Folder
+for smd in glob.glob("*.smd"):
+    qc = open(smd[:-4] + ".qc", "w+")
+    qc.write("$modelname	\"props\\test\\" + smd[:-4] +".mdl\"" + "\n")
+    qc.write("$body mybody	\"" + os.path.abspath(smd)[:-4] + ".smd\"" + "\n")
+    qc.write("$staticprop" + "\n")
+    qc.write("$surfaceprop	default" + "\n")
+    qc.write("$cdmaterials	\"models\props\"" + "\n")
+    qc.write("$scale		20" + "\n")
+    qc.write("$sequence idle	\"" + os.path.abspath(smd)[:-4] + ".smd\"" + "\n")
+    qc.write("$collisionmodel	\"" + os.path.abspath(smd)[:-4] + ".smd\" { $concave }" )
+    qc.close()
 
+    qcpath = os.path.abspath(smd)[:-4] + ".qc" + '"'
+    os.chdir(sourcedir)
+    os.system("studiomdl.exe -game " + '"' + gamedir + '" "' + qcpath )
+    os.chdir(tmppath)
+   
