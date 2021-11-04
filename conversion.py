@@ -22,6 +22,8 @@ for line in lines:
         gamedir = line.split('=')[1].strip(' ').strip('\n')
     if line.startswith('Scale'):
         scale = line.split('=')[1].strip(' ').strip('\n')
+    if line.startswith('StudioMDL Timeout'):
+	mdltimeout = line.split('=')[1].strip(' ').strip('\n')
 
 # Get the Directory containing all the .odr files
 # odrdir = "D:\\downloads\\GTA5Models\\raw\\mpheist4\\int_mp_h_props\\"
@@ -102,8 +104,10 @@ for smd in glob.glob('*.smd'):
     qc.close()
 
     # Send each QC file to studiomdl to be compiled, works
-
     qcpath = os.path.abspath(smd)[:-4] + '.qc' + '"'
     os.chdir(sourcedir)
-    os.system('studiomdl.exe -game ' + '"' + gamedir + '" "' + qcpath)
+    try:
+        subprocess.call('studiomdl.exe -game ' + '"' + gamedir + '" "'+ qcpath, timeout=mdltimeout)
+    except subprocess.TimeoutExpired:
+        print ('StudioMDL timed out, skipping.')
     os.chdir(tmppath)
