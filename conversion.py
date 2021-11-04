@@ -23,7 +23,7 @@ for line in lines:
     if line.startswith('Scale'):
         scale = line.split('=')[1].strip(' ').strip('\n')
     if line.startswith('StudioMDL Timeout'):
-	mdltimeout = line.split('=')[1].strip(' ').strip('\n')
+        mdltimeout = int(line.split('=')[1].strip(' ').strip('\n'))
 
 # Get the Directory containing all the .odr files
 # odrdir = "D:\\downloads\\GTA5Models\\raw\\mpheist4\\int_mp_h_props\\"
