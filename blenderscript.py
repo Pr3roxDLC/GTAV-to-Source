@@ -29,12 +29,13 @@ bpy.context.scene.vs.export_path = rootdir + '\\temp\\'
 bpy.context.scene.vs.export_format = 'SMD'
 bpy.context.scene.vs.engine_path = engine_path
 
+for model in glob.glob(rootdir + "\\temp\\*.obj"): print(model)
 
 #Import Each OBJ file and export a SMD file for each created Sub Model
-for model in glob.glob(rootdir + '\\temp\\*.obj'):
-    bpy.ops.import_scene.obj(  #
+for model in glob.glob(rootdir + "\\temp\\*.obj"):
+    bpy.ops.import_scene.obj(
         filepath=os.path.abspath(model),
-        filter_glob='*.obj;*.mtl',
+        filter_glob="*.obj;*.mtl",
         use_edges=True,
         use_smooth_groups=True,
         use_split_objects=True,
@@ -50,11 +51,15 @@ for model in glob.glob(rootdir + '\\temp\\*.obj'):
     #Export DDS Textures as <ModelName>.dds so they can be used for compiling the MDL models later
     for obj in bpy.data.objects:
         try:
-            shutil.copyfile(bpy.data.materials[obj.active_material.name].node_tree.nodes['Image Texture'
-                            ].image.filepath, rootdir + '\\temp\\'
-                            + obj.name + '.dds')
-        except (FileNotFoundError) as error:
-            print('No Texture File Found for: ' + obj.name + ' skipping.')
+            shutil.copyfile(bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"
+                            ].image.filepath, rootdir + "\\temp\\"
+                            + obj.name + ".dds")
+            bpy.context.object.active_material.name = \
+                bpy.data.materials[bpy.context.object.active_material.name].node_tree.nodes["Image Texture"
+                    ].image.name[:-4]
+        except (FileNotFoundError, AttributeError) as error:
+           pass
+
 
     #Clear the Scene so blender doesnt crash
     for obj in bpy.data.objects:
