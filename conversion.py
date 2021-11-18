@@ -75,20 +75,6 @@ os.system('blender --background --python ' + rootdir + '\\blenderscript.py -- ' 
 # Compiling the SMD Model to a MDL model so it can be used in the Source Engine
 os.chdir(tmppath)
 
-# Patch Up SMD Files as texture file names and the references in the smd file dont match
-# replace all occurences of 
-for smd in glob.glob('*.smd'):
-
-    with open(smd) as file:
-        lines = file.readlines()
-        replacer = lines[9]
-        lines = [line2.replace(replacer, smd[:-4] + "\n") for line2 in lines]
-        newText = ''.join(lines)
-
-    with open(smd, 'w') as f:
-        f.write(newText)
-
-
 # Generate a Generic QC File in the temp Folder
 
 for smd in glob.glob('*.smd'):
@@ -111,3 +97,15 @@ for smd in glob.glob('*.smd'):
     except subprocess.TimeoutExpired:
         print ('StudioMDL timed out, skipping.')
     os.chdir(tmppath)
+
+    #Generate Generic VMT Files
+
+for dds in glob.glob("*.dds"):
+    file = open(dds[:-4] + ".vmt", "w+")
+    file.write("VertexLitGeneric" + "\n")
+    file.write("{" + "\n")
+    file.write("$basetexture \"" + "models/props/test/" + dds[:-4] + "\"" + "\n")
+    file.write("$alphatest 1"  + "\n")
+    file.write("$alphatestreference 0.1" + "\n")
+    file.write("}")
+    file.close()
