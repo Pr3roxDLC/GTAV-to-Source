@@ -30,6 +30,5 @@ Optional: Export all the textures from the model rpf to ODR Dir Path\textures\ .
 Start the conversion by running the conversion.py script from cmd.
 The scipt will populate a temp folder to work with and then output all the models to ...\Game Path\props\test\
 
-Note, that at the moment, textures need to be converted by hand by using tools like VTFEdit or VMTEditor.
 
 
