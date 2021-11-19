@@ -59,14 +59,14 @@ for model in glob.glob(rootdir + "\\temp\\*.obj"):
         except FileNotFoundError: 
             #Texture defined in the obj was not embedded in the GTA Model, try getting the texture from the exported extra textures
             print("Failed to Copy Over File, Searching in \\texture\\ folder.")
-            shutil.copyfile(odrdir + "textures\\" + bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower() + ".dds",
+            shutil.copyfile(rootdir + "\\temp\\textures\\" + bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower() + ".dds",
             rootdir + "\\temp\\" + bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower() + ".dds")
             obj.active_material.name = bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower()
         except AttributeError:
             print("AtributeError on texture")
         except shutil.SameFileError:
             print("SameFileError")
-            shutil.copyfile(odrdir + "textures\\" + bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower() + ".dds",
+            shutil.copyfile(rootdir + "\\temp\\textures\\" + bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower() + ".dds",
             rootdir + "\\temp\\" + bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower() + ".dds")
             obj.active_material.name = bpy.data.materials[obj.active_material.name].node_tree.nodes["Image Texture"].image.name.lower()
     

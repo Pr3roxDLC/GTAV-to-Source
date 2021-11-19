@@ -180,9 +180,9 @@ def parse_odr(path, force=False):
 
 	lods = {
 		"high" : high_lod_data[0] if len(high_lod_data)>0 else None,
-		"med" : med_lod_data[0] if len(med_lod_data)>0 else None,
-		"low" : low_lod_data[0] if len(low_lod_data)>0 else None,
-		"vlow" : vlow_lod_data[0] if len(vlow_lod_data)>0 else None,
+#		"med" : med_lod_data[0] if len(med_lod_data)>0 else None,
+#		"low" : low_lod_data[0] if len(low_lod_data)>0 else None,
+#		"vlow" : vlow_lod_data[0] if len(vlow_lod_data)>0 else None,
 	}
 
 	obj_data = ""

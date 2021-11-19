@@ -4,7 +4,8 @@ import os
 import shutil
 import glob
 import subprocess
-
+import re
+import pathlib
 # Get and store the original root dir
 
 rootdir = os.getcwd()
@@ -57,11 +58,17 @@ for file in os.listdir():
         shutil.copyfile(file, tmppath + file)
         names.append(file[:-4])
 
+os.chdir(tmppath)
+for dds in glob.glob("**/*.dds", recursive=True):
+    print(dds + " " + os.path.basename(dds))
+    shutil.copyfile(dds,  tmppath + "\\textures\\" + os.path.basename(dds))
+
 # Copy Needed Script Files from Root dir to Temp dir
 os.chdir(rootdir)
 shutil.copytree('glob2', tmppath + 'glob2')
 shutil.copyfile('openformat-to-obj.py', tmppath + 'openformat-to-obj.py')
 shutil.copyfile('ShaderManager.xml', tmppath + 'ShaderManager.xml')
+shutil.copyfile("readdxt.exe", tmppath + "readdxt.exe")
 
 # Now that everything is set up in the temp folder, navigate into it and start the conversion
 os.chdir(tmppath)
@@ -109,3 +116,24 @@ for dds in glob.glob("*.dds"):
     file.write("$alphatestreference 0.1" + "\n")
     file.write("}")
     file.close()
+    
+    os.system("readdxt.exe " + dds)
+    for tga in glob.glob(dds[:-4] + "*.tga"):
+        if not re.match(dds[:-4] + "00.tga", tga):
+            os.remove(tga)
+        else:
+            shutil.copyfile(tga, tga[:-6] + ".tga")
+            file = open(tga[:-6]+".txt", "w+")
+            file.write("nocompress 1")
+            file.close()
+            os.remove(tga)
+
+for tga in glob.glob("*.tga"):
+    os.chdir(sourcedir)
+    os.system("vtex.exe -game \"" + gamedir[:-1] +"\" -dontusegamedir -nopause -quiet \"" + tmppath + tga + "\"")
+
+    os.chdir(tmppath)
+for vtf in glob.glob("*.vtf"):
+    shutil.copyfile(vtf, gamedir + "materials\\models\\props\\test\\" + vtf )
+for vmt in glob.glob("*.vmt"):
+    shutil.copyfile(vmt, gamedir + "materials\\models\\props\\test\\" + vmt )
