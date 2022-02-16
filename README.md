@@ -25,7 +25,7 @@ Once all of the above are installed and set up, configure the run.cfg for your e
 
 After this is done, use Open IV to export the models from GTA, Left Click on any Drawable Object file (.ydr) and select Export to openFormats (.odr). Export the models to the ODR Dir Path defined above.
 
-Optional: Export all the textures from the model rpf to ODR Dir Path\textures\ . Sometimes GTA doesnt embed the textures correctly with the models, resulting in them not being exported correctly when exporting them to .odr, therefor we have can export the textures manually and put them in the \texture\ folder so incase we encounter a missing texture, we can automatically try to look for it in the \texture\ folder
+Optional: Export all the textures from the model rpf to ODR Dir Path\textures\ . Sometimes GTA doesnt embed the textures correctly with the models, resulting in them not being exported correctly when exporting them to .odr, therefor we can export the textures manually and put them in the \texture\ folder so incase we encounter a missing texture, we can automatically try to look for it in the \texture\ folder
 
 Start the conversion by running the conversion.py script from cmd.
 The scipt will populate a temp folder to work with and then output all the models to ...\Game Path\props\test\
